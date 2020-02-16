@@ -1,9 +1,12 @@
 const fs = require('fs');
+const chalk = require('chalk');
+const log = console.log;
 
 const getNotes = function() {
     const notes = loadNotes();
     return 'These are my notes: ' + notes;
 }
+
 const addNote = function(title, body) {
     const notes = loadNotes();
     const found = notes.filter((note) => note.title === title)
@@ -13,13 +16,14 @@ const addNote = function(title, body) {
             body
         })
         saveNotes(notes);
+        console.log(chalk.green('Note added.'));
     } else {
-        console.log('Duplicate title found!', found);
+        console.log(chalk.red('Duplicate title found!\n'), chalk.white(JSON.stringify(found[0])));
     }
 }
+
 const removeNote = function(title) {
 const notes = loadNotes();
-
 const results = notes.reduce((acc, note) => {
     // Sort notes into 2 arrays keyed on an object, 'match' and 'noMatch'
     if (note.title != title) {
@@ -31,12 +35,10 @@ const results = notes.reduce((acc, note) => {
     }
 }, { match: [], noMatch:[] });
 
-// console.log('res: ', JSON.stringify(results));
-
 if (results.match.length == 0) {
-    console.log('Note not found. Nothing to remove.');
+    console.log(chalk.red('Note not found. Nothing to remove.'));
 } else {
-    console.log('Removing found note: ', results.match[0]);
+    console.log(chalk.green('Removing found note: ', JSON.stringify(results.match[0])));
     saveNotes(results.noMatch);
 }
 };
