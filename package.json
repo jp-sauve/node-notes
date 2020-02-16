@@ -9,5 +9,8 @@
     "chalk": "^3.0.0",
     "validator": "^12.2.0",
     "yargs": "^15.1.0"
+  },
+  "notes": {
+    "defaultTitle": "Default title"
   }
 }
