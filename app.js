@@ -1,5 +1,6 @@
 const chalk = require('chalk');
 const yargs = require('yargs').pkgConf('notes');
+const notes = require('./notes');
 const log = console.log;
 // add
 yargs.command({
@@ -18,8 +19,13 @@ yargs.command({
         }
     },
     handler: function (argv) {
-        log(argv.title ? `Adding with title: ${argv.title}` : `Adding with lame title: ${argv.defaultTitle}`);
-        log('Body: ', argv.body);
+        let resp = notes.addNote(argv.title, argv.body);
+        // console.log('resp from addNotes: ', resp)
+        if (!resp) {
+            console.log('Successfully added note');
+            return;
+        }
+        console.error('Failure adding note');
     }
 })
 // list
