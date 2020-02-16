@@ -21,11 +21,6 @@ yargs.command({
     handler: function (argv) {
         let resp = notes.addNote(argv.title, argv.body);
         // console.log('resp from addNotes: ', resp)
-        if (!resp) {
-            console.log('Successfully added note');
-            return;
-        }
-        console.error('Failure adding note');
     }
 })
 // list
@@ -63,7 +58,7 @@ yargs.command({
         }
     },
     handler: function (argv) {
-       log('removing note');
+        notes.removeNote(argv.title);
     },
 })
 yargs.parse()
