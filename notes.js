@@ -2,12 +2,18 @@ const fs = require('fs');
 const chalk = require('chalk');
 const log = console.log;
 
-const getNotes = function() {
+const listNotes = () => {
     const notes = loadNotes();
-    return 'These are my notes: ' + notes;
-}
+    notes.forEach((item) => log(chalk.white(item.title)));
 
-const addNote = function(title, body) {
+}
+const readNote = (title) => {
+    const found = loadNotes().filter((note) => note.title == title)
+    log('Title: ', chalk.yellow(found[0].title));
+    log('Body: ', chalk.yellowBright(found[0].body))
+};
+
+const addNote = (title, body) => {
     const notes = loadNotes();
     const found = notes.filter((note) => note.title === title)
     if (!found.length) {
@@ -22,9 +28,10 @@ const addNote = function(title, body) {
     }
 }
 
-const removeNote = function(title) {
-const notes = loadNotes();
-const results = notes.reduce((acc, note) => {
+const removeNote = (title) => {
+    const notes = loadNotes();
+
+    const results = notes.reduce((acc, note) => {
     // Sort notes into 2 arrays keyed on an object, 'match' and 'noMatch'
     if (note.title != title) {
         acc.noMatch = acc.noMatch.concat([note]);
@@ -33,7 +40,7 @@ const results = notes.reduce((acc, note) => {
         acc.match = acc.match.concat([note]);
         return acc;
     }
-}, { match: [], noMatch:[] });
+    }, { match: [], noMatch:[] });
 
 if (results.match.length == 0) { // intentional implicit coercion
     console.log(chalk.red('Note not found. Nothing to remove.'));
@@ -42,21 +49,23 @@ if (results.match.length == 0) { // intentional implicit coercion
     saveNotes(results.noMatch);
 }
 };
+
 const saveNotes = function(notes) {
     const notesJSON = JSON.stringify(notes);
     fs.writeFileSync('notes.json', notesJSON);
 }
-const loadNotes = function() {
+
+const loadNotes = () => {
     try {
-        const data = fs.readFileSync('notes.json').toString();
-        return JSON.parse(data);
+        return JSON.parse(fs.readFileSync('notes.json').toString());
     } catch(err) {
         return [];
     }
 
 }
 module.exports = {
-    getNotes,
+    listNotes,
+    readNote,
     addNote,
     removeNote
 }
