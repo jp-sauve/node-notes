@@ -35,10 +35,10 @@ const results = notes.reduce((acc, note) => {
     }
 }, { match: [], noMatch:[] });
 
-if (results.match.length == 0) {
+if (results.match.length == 0) { // intentional implicit coercion
     console.log(chalk.red('Note not found. Nothing to remove.'));
 } else {
-    console.log(chalk.green('Removing found note: ', JSON.stringify(results.match[0])));
+    console.log(chalk.green('Removing found note: '), chalk.white(JSON.stringify(results.match[0])));
     saveNotes(results.noMatch);
 }
 };
