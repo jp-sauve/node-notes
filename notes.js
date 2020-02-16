@@ -8,9 +8,10 @@ const listNotes = () => {
 
 }
 const readNote = (title) => {
-    const found = loadNotes().filter((note) => note.title == title)
-    log('Title: ', chalk.yellow(found[0].title));
-    log('Body: ', chalk.yellowBright(found[0].body))
+    const found = loadNotes().find((note) => note.title == title)
+    // console.log(JSON.stringify(found))
+    log('Title: ', chalk.yellow.inverse(found.title));
+    log('Body: ', chalk.yellowBright(found.body))
 };
 
 const addNote = (title, body) => {
